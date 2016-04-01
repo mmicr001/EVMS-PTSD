@@ -2,7 +2,7 @@
 clear; clc; close all;
 
 % Dataset Root Location
-mRootDir = 'C:\Users\Johnson\Desktop\EVMS\Registry\';
+mRootDir = 'C:\Users\Mike\Google Drive\EVMS\';
 
 % 4 possible sessions for each subject:
 % 1: Baseline
@@ -106,7 +106,7 @@ sub = [1 3 7 9]; % subjects to look at, since not all are complete, and since so
 % for i = 1:length(Data)
 cntr=1;
 for i = sub
-    fprintf(1,'Creating features for subject %g',i);
+    fprintf(1,'Creating features for subject % g',i);
 
     % directories for the 4 possible sessions
     mDirs{1} = [char(mRootDir) char(Data(i).pID) '\RegistrySubject' char(Data(i).pID) 'Baseline\'];
@@ -145,7 +145,7 @@ end; clearvars -except Features Data mRootDir sub;
 
 maxSessions = 4;           % at most 4 sessions
 for i = 1:length(Features) % for each subject                           
-    o = Features{i}.Open; % for eyes open
+    o = Features{i}.Open;  % for eyes open
     mMaxSize = 0;
     for j = 1:maxSessions 
         if( j < length(o) )

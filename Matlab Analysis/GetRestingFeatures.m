@@ -54,6 +54,9 @@ features = features';
 features = features(:);
 features = features';
 
+%suck a bag of dicks
+
+
 % calculate correlation between frontal hemispheres? and use as a feature
 sigFLeft = mean(sig(:,groupings{2}),2);
 sigFRight = mean(sig(:,groupings{3}),2);
