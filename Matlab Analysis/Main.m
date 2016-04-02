@@ -43,7 +43,7 @@ Data(3).Outcomes.EEGDay = [ 5 23 31 81 ];
 
 Data(4).pID = {'HLu'};
 Data(4).Sessions=[1 2 3 4];
-Data(3).Outcomes.Days = [ 1 58 66 72 84 91 101 114 ];
+Data(4).Outcomes.Days = [ 1 58 66 72 84 91 101 114 ];
 Data(4).Outcomes.BDI = [ 29 29 21 24 28 18 12 11 ];
 Data(4).Outcomes.BAI = [ 4 5 3 2 4 2 1 2 ];
 Data(4).Outcomes.EEGDay = [ 51 60 71 114];
@@ -231,6 +231,9 @@ features = cell2mat( features );
 %% NOW SEE WHAT FEATURES FOLLOW TRENDS ACROSS SUBJECTS
 %  E.G., CONSISTENTLY INCREASE OR DECREASE THROUGH TREATMENT SESSIONS
 
+% we create vectors containing the BDI and BAI values 
+BAI = [];
+BDI = [];
 for i = 1:length(sub)
     
     if (isfield(Data(sub(i)).Outcomes, 'EEGDay' ))
@@ -238,24 +241,27 @@ for i = 1:length(sub)
         a = Data(sub(i)).Outcomes.Days(:);
         b = Data(sub(i)).Outcomes.BDI(:) ;
         r = interp1(a , b, c);
-    end         
+    end          
+        
+    % vectors containing the BDI and BAI values on EEGDay 
+    BDI = cat(1, BDI , r);
+    BAI = cat(1, BAI , r);
+        
+end;  
 
-        
-        
-        
-    % should have 8 measurements of depression and anxiety throughout
-    BDI = Data(sub(i)).Outcomes.BDI;
-    BAI = Data(sub(i)).Outcomes.BAI;
-    
-    
-    
-    
-    
+%compute correlation
+crl_depression = zeros (1, size(features,2));   %depression correlation
+crl_anxiety = zeros (1, size(features,2));      %anxiety correlation
+for i = 1 : size(features,2)
+        crl_depression(i) = corr( BDI , features(:,i));
+        crl_anxiety(i) = corr( BAI , features(:,i));
 end
 
 
+[d_corr_values d_corr_ind] = sort(crl_depression);
+[a_corr_values a_corr_ind] = sort(crl_depression);
 
-
+clearvars -except Features Data mRootDir features sub BDI BAI d_corr_values d_corr_ind a_corr_values a_corr_ind; 
 
 
 
