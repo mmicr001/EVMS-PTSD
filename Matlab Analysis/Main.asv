@@ -2,7 +2,7 @@
 clear; clc; close all;
 
 % Dataset Root Location
-mRootDir = 'C:\Users\Mike\Google Drive\EVMS\';
+mRootDir = 'C:\Users\Johnson\Desktop\EVMS\Registry\';
 
 % 4 possible sessions for each subject:
 % 1: Baseline
@@ -22,73 +22,56 @@ mRootDir = 'C:\Users\Mike\Google Drive\EVMS\';
 % Patient Identification
 Data(1).pID = {'AMa'};
 Data(1).Sessions=[1 2 3 4];
-Data(1).Outcomes.Days = [  1 16 23 30 37 45 55 65 ];
+Data(1).Outcomes.Days = [  1 15 22 29 36 44 54 64 ];
 Data(1).Outcomes.BDI =  [ 40 24 14 15 16 14 16 15 ];
 Data(1).Outcomes.BAI =  [ 14 10  3  3  5  4  4  3 ];
-Data(1).Outcomes.EEGDay = [ 6 14 28 65 ];
+Data(1).Outcomes.EEGDay = [ 5 13 27 64 ];
 
 Data(2).pID = {'AWa'};
 Data(2).Sessions=[1 2 3 4];
-Data(2).Outcomes.Days = [  1 45 53 59 66 73 81 93 ];
-Data(2).Outcomes.BDI =  [ 35 10 13  0  0  0  0  0 ];
-Data(2).Outcomes.BAI =  [ 14  4 10  1  3  1  1  0 ];
-Data(2).Outcomes.EEGDay = [ 39 45 56 93];
+Data(2).Outcomes.Days = [ 1  ];
+Data(2).Outcomes.BDI = [ 35 10 13 0 0 0 0 0 ];
+Data(2).Outcomes.BAI = [ 14 4 10 1 3 1 1 0 ];
 
 Data(3).pID = {'GMu'};
 Data(3).Sessions=[1 2 3 4];
-Data(3).Outcomes.Days = [  1 16 23 33 40 47 65 71 81 ]; 
-Data(3).Outcomes.BDI =  [ 38 17 11  9  8  4  3  2  1 ];
-Data(3).Outcomes.BAI =  [ 17  6  5  2  2  2  1  0  0 ];
-Data(3).Outcomes.EEGDay = [ 5 23 31 81 ];
+Data(3).Outcomes.BDI = [ 38 17 11 9 8 4 3 2 1 ];
+Data(3).Outcomes.BAI = [ 17 6 5 2 2 2 1 0 0 ];
 
 Data(4).pID = {'HLu'};
 Data(4).Sessions=[1 2 3 4];
-Data(3).Outcomes.Days = [ 1 58 66 72 84 91 101 114 ];
 Data(4).Outcomes.BDI = [ 29 29 21 24 28 18 12 11 ];
 Data(4).Outcomes.BAI = [ 4 5 3 2 4 2 1 2 ];
-Data(4).Outcomes.EEGDay = [ 51 60 71 114];
 
 Data(5).pID = {'JCa'};
 Data(5).Sessions=[1 2 3 4];
-Data(5).Outcomes.Days = [  1 24 31 54 61 71 78 93];
-Data(5).Outcomes.BDI =  [ 43 38 36 31 33 36 35 40 ];
-Data(5).Outcomes.BAI =  [ 45 37 35 40 30 39 43 42 ];
-Data(5).Outcomes.EEGDay = [ 10 22 51 93 ];
+Data(5).Outcomes.BDI = [ 43 38 36 31 33 36 35 40 ];
+Data(5).Outcomes.BAI = [ 45 37 35 40 3039 43 42 ];
 
 Data(6).pID = {'MPe'}; 
 Data(6).Sessions=[2 3]; % fix structure!!
-Data(6).Outcomes.Days = [  1 13 20 27 35 42 49 58 ];
-Data(6).Outcomes.BDI =  [ 33 31 26 36 37 40 40 44 ];
-Data(6).Outcomes.BAI =  [  9 11  7  8 11 15 13 15 ];
-Data(6).Outcomes.EEGDay = [ 13 26 ];
+Data(6).Outcomes.BDI = [ 33 31 26 36 37 40 40 44 ];
+Data(6).Outcomes.BAI = [ 9 11 7 8 11 15 13 15 ];
 
 Data(7).pID = {'MWi'};
 Data(7).Sessions=[1 2 3 4];
-Data(7).Outcomes.Days = [  1 63 70 77 90 97 105 112 ];
-Data(7).Outcomes.BDI =  [ 38 32 22 14 14 11  11   6 ];
-Data(7).Outcomes.BAI =  [ 10  5  4  2  1  0   0   0 ];
-Data(7).Outcomes.EEGDay = [ 8 62 77 112 ];
+Data(7).Outcomes.BDI = [ 38 32 22 14 14 11 11 6 ];
+Data(7).Outcomes.BAI = [ 10 5 4 2 1 0 0 0 ];
 
 Data(8).pID = {'NTo'};
 Data(8).Sessions=[1 2 3 4];
-Data(8).Outcomes.Days = [  1 27 37 44 63 70 78 99 ];
-Data(8).Outcomes.BDI =  [ 41 25 32 15 18 15 12  8 ];
-Data(8).Outcomes.BAI =  [ 10 11 14  9  9  7  4  3 ];
-Data(8).Outcomes.EEGDay = [ 14 30 44 99 ];
+Data(8).Outcomes.BDI = [ 41 25 32 15 18 15 12 8 ];
+Data(8).Outcomes.BAI = [ 10 11 14 9 9 7 4 3 ];
 
 Data(9).pID = {'R-LGo'};
 Data(9).Sessions=[1 2 3 4];
-Data(9).Outcomes.Days = [  1 21 28 36 42 49 57 79 ];
-Data(9).Outcomes.BDI =  [ 46 26 10  4  2  2  2  1 ];
-Data(9).Outcomes.BAI =  [ 28 25 21 13  6  3  5  4 ];
-Data(9).Outcomes.EEGDay = [ 8 17 36 79 ];
+Data(9).Outcomes.BDI = [ 46 26 10 4 2 2 2 1 ];
+Data(9).Outcomes.BAI = [ 28 25 21 13 6 3 5 4 ];
 
 Data(10).pID = {'SHa'};
 Data(10).Sessions=[1 2 3];
-Data(10).Outcomes.Days = [  1 13 21 28 36 44 55 73 ];
-Data(10).Outcomes.BDI = [ 23 19 14 13 15  8 10  7 ];
-Data(10).Outcomes.BAI = [ 17 11  5  7  5  3  1  1 ];
-Data(10).Outcomes.EEGDay = [ 1 10 27 ];
+Data(10).Outcomes.BDI = [ 23 19 14 13 15 8 10 7 ];
+Data(10).Outcomes.BAI = [ 17 11 5 7 5 3 1 1 ];
 
 Data(11).pID = {'PCi'};
 Data(11).Sessions=[ 2 3 ];
@@ -236,9 +219,10 @@ for i = 1:length(sub)
     if (isfield(Data(sub(i)).Outcomes, 'EEGDay' ))
         c = Data(sub(i)).Outcomes.EEGDay(:) ;
         a = Data(sub(i)).Outcomes.Days(:);
-        b = Data(sub(i)).Outcomes.BDI(:) ;
-        r = interp1(a , b, c);
-    end         
+        b = Data(sub(i)).Outcomes.BDI(:);
+            
+            r = interp1(a , b, c);
+                
 
         
         
