@@ -261,7 +261,7 @@ end
 
 
 [d_corr_values d_corr_ind] = sort(crl_depression);
-[a_corr_values a_corr_ind] = sort(crl_depression);
+[a_corr_values a_corr_ind] = sort(crl_anxiety);
 
 clearvars -except Features Data mRootDir features sub BDI BAI d_corr_values d_corr_ind a_corr_values a_corr_ind; 
 
