@@ -55,11 +55,11 @@ Data(kk).Outcomes.EEGDay = [ 9 14 41 93 ];
 kk=kk+1;
 
 Data(kk).pID = {'CMi'};         % needs updating
-Data(kk).Sessions=[  ];
-Data(kk).Outcomes.Days = [  ];
-Data(kk).Outcomes.BDI =  [  ];
-Data(kk).Outcomes.BAI =  [  ];
-Data(kk).Outcomes.EEGDay = [  ];
+Data(kk).Sessions=[ 1 2 3 4 ];
+Data(kk).Outcomes.Days = [  1 14 21 28 35 42 50 64 ];
+Data(kk).Outcomes.BDI =  [ 25  3  6  3  3  5  7  2 ];
+Data(kk).Outcomes.BAI =  [ 19  5  5  2  2  3  2  2 ];
+Data(kk).Outcomes.EEGDay = [ 7 20 27 64 ];
 kk=kk+1;
 
 Data(kk).pID = {'EBa'};        % needs updating
@@ -196,7 +196,7 @@ kk=kk+1;
 
 
 
-sub = [1 3 7 8 9]; % subjects to look at, since not all are complete, and since some have bad sessions (see excel spreadsheet) due to loose reference on cap2
+sub = [ 14 16]; % subjects to look at, since not all are complete, and since some have bad sessions (see excel spreadsheet) due to loose reference on cap2
 
 %% FEATURE CONSTRUCTION
 % Let's first construct features for each subject, we want to see how
@@ -219,13 +219,16 @@ for i = sub
         if( ismember(j,Data(i).Sessions) )
             mDir = char(mDirs{j});
             mFiles = dir([mDir '\*.dat']);            
-            [ sig,~,prm ] = load_bcidat( [char(mDir) char(mFiles(1).name)],'-calibrated' );
-            Features{cntr}.Open{j,1} = GetRestingFeatures( sig,prm );
+            [ sig,st,prm ] = load_bcidat( [char(mDir) char(mFiles(1).name)],'-calibrated' );
+            [ sig,st,prm ] = ArtifactRejection( sig,st,prm );
+            Features{cntr}.Open{j,1} = GetRestingFeatures( sig, st, prm );
             fprintf(1,'.');             
             [ sig,~,prm ] = load_bcidat( [char(mDir) char(mFiles(2).name)],'-calibrated' );
-            Features{cntr}.Closed{j,1} = GetRestingFeatures( sig,prm );
+            [ sig,st,prm ] = ArtifactRejection( sig,st,prm );
+            Features{cntr}.Closed{j,1} = GetRestingFeatures( sig, st, prm );
             fprintf(1,'.');            
             [ sig,st,prm ] = load_bcidat( [char(mDir) char(mFiles(3).name)],[char(mDir) char(mFiles(4).name)],'-calibrated' );            
+            [ sig,st,prm ] = ArtifactRejection( sig,st,prm );
             Features{cntr}.P3{j,1} = GetP3Features( sig,st,prm,0 );
             fprintf(1,'.');
         end
