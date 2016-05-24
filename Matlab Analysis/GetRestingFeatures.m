@@ -1,6 +1,5 @@
 function features = GetRestingFeatures( sig, st, prm )
 
-
 % sampling rate of our EEG
 fs = prm.SamplingRate.NumericValue;
 % first, let's common average re-reference? (maybe try spatial laplacian
@@ -67,6 +66,8 @@ groupings = [{[1 2 3 17 18 19 20 21 22 23 24]};
              {[5 6 7 9 10 25]};
              {[12 13 14 15 16 26 27 28 29 30 31 32]}];
 
+         
+         
 badCh = find( prm.BadChannels == 1) ; 
 for i = 1 : size(groupings, 1)
     ind = ismember ( groupings{i} , badCh ) ;
@@ -77,6 +78,7 @@ end
 % frequency bands that we care about
 bands = [1 4; 4 8; 8 14; 14 30];
 
+
 featuresCh=[];
 for k = 1: size(chStart, 1);
     
@@ -85,11 +87,22 @@ for k = 1: size(chStart, 1);
     % bandpower initializations
     bp=zeros(size(groupings,1),size(bands,1));
     bpTotal=zeros( size(groupings,1),1 );
+    
+     % bandpower calculations
     for i = 1:size(groupings,1)
+        
         for j = 1:size(bands,1)
-            bp(i,j)= mean( bandpower(sig(:,groupings{i}),fs,bands(j,:)) );
+            if isempty(groupings{i})
+                bp(i,j) = NaN;
+                bpTotal(i) = NaN;
+            else
+                bp(i,j)= mean( bandpower(sig(chStart(k) : chEnd(k) ,groupings{i}),fs,bands(j,:)) );
+            end
         end
-        bpTotal(i)=mean( bandpower(sig(:,groupings{i}),fs,[bands(1) bands(end)]) );
+        
+        if ~isempty(groupings{i})
+            bpTotal(i)=mean( bandpower(sig(chStart(k) : chEnd(k),groupings{i}),fs,[bands(1) bands(end)]) );
+        end
     end
     
     bpAsPercentageOfRegion = bp./ repmat(bpTotal,1,size(bp,2));
@@ -104,32 +117,49 @@ for k = 1: size(chStart, 1);
     features = features';
     
     % calculate correlation between frontal hemispheres? and use as a feature
-    sigFLeft = mean(sig(:,groupings{2}),2);
-    sigFRight = mean(sig(:,groupings{3}),2);
-    r = corr(sigFLeft,sigFRight);
+    if ~(isempty(groupings{2}) | isempty(groupings{3}))
+        sigFLeft = mean(sig(chStart(k) : chEnd(k),groupings{2}),2);
+        sigFRight = mean(sig(chStart(k) : chEnd(k),groupings{3}),2);
+        r = corr(sigFLeft,sigFRight);
+       
+    else
+        r = NaN;
+    end
     features = [features r];
     
+   
     % calculate mutual information (like correlation)
-    sigFLeft = mean(sig(:,groupings{2}),2);
-    sigFRight = mean(sig(:,groupings{3}),2);
-    % change into that directory, just adding to path doesn't work with
-    % executables???
-    cd('.\MutualInformationICA\');
-    mi = MIhigherdim( [sigFLeft'; sigFRight'] );
-    cd('..\');
+    if ~(isempty(groupings{2}) | isempty(groupings{3}))
+        sigFLeft = mean(sig(chStart(k) : chEnd(k),groupings{2}),2);
+        sigFRight = mean(sig(chStart(k) : chEnd(k),groupings{3}),2);
+        % change into that directory, just adding to path doesn't work with
+        % executables???
+        cd('.\MutualInformationICA\');
+        mi = MIhigherdim( [sigFLeft'; sigFRight'] );
+        
+        
+        cd('..\');
+        
+    else
+        mi = NaN;
+    end
     features = [features mi];
     
     % maybe normalize the mutual information (see
     % https://en.wikipedia.org/wiki/Mutual_information#Normalized_variants
     % for why square root of product of entropies is used)
     miNormalized = mi/ sqrt( entropy(sigFLeft',[],[],2)*entropy(sigFRight',[],[],2) );
+    
     features = [features miNormalized];
     featuresCh (k, :) = features ;
     
     
 end
 
-features = mean (featuresCh);
+features = nanmean (featuresCh);
+if isempty(k)
+   features = NaN(1,43); 
+end
 % connectivity analysis features??
 
 
